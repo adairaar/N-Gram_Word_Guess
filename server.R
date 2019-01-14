@@ -8,35 +8,52 @@
 #
 
 library(shiny)
-library(rdrop2)
+library(stringr)
+library(dplyr)
+#library(rdrop2)
 
+
+#setwd("~/Dropbox/Coursera/SwiftKey Project")
+
+
+## read in prepared dataframes
+unigramDF <- readRDS(file = "data/unigramDF.RData")
+bigramsDF <- readRDS(file = "data/bigramsDF.RData")
+trigramsDF <- readRDS(file = "data/trigramsDF.RData")
+quadgramsDF <- readRDS(file = "data/quadgramsDF.RData")
 
 shinyServer(function(input, output) {
   
-  Data1 <- reactive({
-    Stock1 <- toString(input$Stock1)
-    #getSymbols(Stock1)
-    #Stock1 <- as.data.frame(getSymbols(Stock1))
-  })
-  
-  Data2 <- reactive({
-    Stock2 <- toString(input$Stock2)
-    #getSymbols(Stock2)
-    #Stock2 <- getSymbols(Stock2)
-  })
-  
-  output$distPlot <- renderPlot({
-    Stock1 <- Data1()
-    Stock2 <- Data2()
-    #getSymbols(c(Data1(),Data2()))
-    dataEnv <- new.env()
-    getSymbols(c(Stock1,Stock2), env=dataEnv)
-    plist <- eapply(dataEnv, Ad)
-    pframe <- do.call(merge, plist)
-    Data <- cbind(diff(log((pframe))),diff(log((pframe))))
-    chart.Correlation(Data)
-    #plot(0, xaxt = 'n', yaxt = 'n', bty = 'n', pch = '', ylab = 'y', xlab = 'x')
+  guesses <- reactive({
+    data <- toString(input$ngram)
+    
+    ## fuctions for helping generate probs
+    getLastWords <- function(string, words) {
+      pattern <- paste("[a-z']+( [a-z']+){", words - 1, "}$", sep="")
+      return(substring(string, str_locate(string, pattern)[,1]))
+    }
+    
+    predictor <- function(input) {
+      input <- toString(input)
+      n <- length(strsplit(input, " ")[[1]])
+      prediction <- c()
+      if(n >= 3 && length(prediction)<3) 
+        prediction <- c(prediction, filter(quadgramsDF, getLastWords(input, 3) == FirstWords)$LastWord)
+      if(n >= 2 && length(prediction)<3) 
+        prediction <- c(prediction, filter(trigramsDF, getLastWords(input, 2) == FirstWords)$LastWord)
+      if(n >= 1 && length(prediction)<3) 
+        prediction <- c(prediction, filter(bigramsDF, getLastWords(input, 1) == FirstWords)$LastWord)
+      if(length(prediction)<3 ) prediction <- c(prediction, unigramDF$Words)
+      
+      return(unique(prediction)[1:5])
+    }
+    
+    guesses <- predictor(data)
   })
 
+
+
+  output$results <- renderTable(guesses(), colnames = FALSE)
+  
   
 })

@@ -1,0 +1,12 @@
+name: N-Gram_Word_Guess
+title: N-Gram_Word_Guess
+username:
+account: gilgadair
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 639799
+bundleId: 1812305
+url: https://gilgadair.shinyapps.io/N-Gram_Word_Guess/
+when: 1547421157.69386
+asMultiple: FALSE
+asStatic: FALSE

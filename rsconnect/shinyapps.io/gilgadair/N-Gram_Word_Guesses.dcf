@@ -1,0 +1,13 @@
+name: N-Gram_Word_Guesses
+title: N-Gram_Word_Guesses
+username:
+account: gilgadair
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 639918
+bundleId: 1812354
+url: https://gilgadair.shinyapps.io/N-Gram_Word_Guesses/
+when: 1547423678.85962
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: .RData|predict_model1.R|prediction_with_synthesized_data.R|profanityfilter.txt|README.md|trial_2.R|trial_3.R

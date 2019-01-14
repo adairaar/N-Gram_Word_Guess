@@ -9,22 +9,22 @@
 
 library(shiny)
 
-# Define UI for application that draws a histogram
+# Define UI for application
 shinyUI(fluidPage(
+  
+  headerPanel("Word Predictor"),
   
   sidebarLayout(
     sidebarPanel(
-      textInput("Stock1", label = h3("Enter first stock symbol"), value = "AAPL"),
-      hr(),
-      textInput("Stock2", label = h3("Enter second stock symbol"), value = "GOOG"),
-      hr(),
-      actionButton("newplot", "Correlate")
+      textInput("ngram", label = h3("Enter in the start of a phrase"), value = "start here"),
+      hr()
     ),
   
   
     mainPanel(
-      h3("Correlation Plots"),
-      plotOutput("distPlot")
+      
+      h3("Next possible words..."),
+      h3(tableOutput("results"))
     )
   )
   )

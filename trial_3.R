@@ -40,9 +40,9 @@ close(con1); close(con2); close(con3)
 
 ## sampling
 set.seed(50)
-samplelines <- c(sample(tweets, length(tweets) * 0.1),
-                 sample(news, length(news) * 1),
-                 sample(blogs, length(blogs) * 0.1))
+samplelines <- c(sample(tweets, length(tweets) * 0.01),
+                 sample(news, length(news) * 0.05),
+                 sample(blogs, length(blogs) * 0.01))
 
 
 
@@ -218,17 +218,21 @@ quadgramsDF <- data.frame("FirstWords" = removeLastWord(names(quadgrams)),
                           "LastWord" = getLastWords(names(quadgrams), 1), 
                           "Probability" = quadgramProbs, stringsAsFactors=F)
 
-unigramDF <- (unigramDF %>% arrange(desc(Probability.Freq)))
-bigramsDF <- bigramsDF %>% arrange(desc(Probability.Freq)) %>% filter(Probability.Freq > 0.0001)
-trigramsDF <- trigramsDF %>% arrange(desc(Probability.Freq)) %>% filter(Probability.Freq > 0.0001)
-quadgramsDF <- quadgramsDF %>% arrange(desc(Probability.Freq)) %>% filter(Probability.Freq > 0.0001)
+unigramDF <- unigramDF %>% arrange(desc(Probability.Freq)) %>% filter(Probability.Freq > 0.0001)
+bigramsDF <- bigramsDF %>% arrange(desc(Probability.Freq)) %>% filter(Probability.Freq > 0.001)
+trigramsDF <- trigramsDF %>% arrange(desc(Probability.Freq)) %>% filter(Probability.Freq > 0.001)
+quadgramsDF <- quadgramsDF %>% arrange(desc(Probability.Freq)) %>% filter(Probability.Freq > 0.001)
 
 
-saveRDS(unigramDF, file = "./unigramDF.Rds")
-saveRDS(bigramsDF, file = "./bigramsDF.Rds")
-saveRDS(trigramsDF, file = "./trigramsDF.Rds")
-saveRDS(quadgramsDF, file = "./quadgramsDF.Rds")
+# saveRDS(unigramDF, file = "./unigramDF.Rds")
+# saveRDS(bigramsDF, file = "./bigramsDF.Rds")
+# saveRDS(trigramsDF, file = "./trigramsDF.Rds")
+# saveRDS(quadgramsDF, file = "./quadgramsDF.Rds")
 
+saveRDS(unigramDF, file = "./unigramDF.RData")
+saveRDS(bigramsDF, file = "./bigramsDF.RData")
+saveRDS(trigramsDF, file = "./trigramsDF.RData")
+saveRDS(quadgramsDF, file = "./quadgramsDF.RData")
 
 predictor <- function(input) {
   n <- length(strsplit(input, " ")[[1]])
@@ -241,7 +245,7 @@ predictor <- function(input) {
     prediction <- c(prediction, filter(bigramsDF, getLastWords(input, 1) == FirstWords)$LastWord)
   if(length(prediction)<3 ) prediction <- c(prediction, unigramDF$Words)
   
-  return(unique(prediction)[1:3])
+  return(unique(prediction)[1:5])
 }
 
 

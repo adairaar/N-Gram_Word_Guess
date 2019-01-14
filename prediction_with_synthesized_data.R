@@ -20,10 +20,10 @@ setwd("~/Dropbox/Coursera/SwiftKey Project")
 
 
 ## read in prepared dataframes
-unigramDF <- readRDS(file = "./unigramDF.Rds")
-bigramsDF <- readRDS(file = "./bigramsDF.Rds")
-trigramsDF <- readRDS(file = "./trigramsDF.Rds")
-quadgramsDF <- readRDS(file = "./quadgramsDF.Rds")
+unigramDF <- readRDS(file = "./unigramDF.RData")
+bigramsDF <- readRDS(file = "./bigramsDF.RData")
+trigramsDF <- readRDS(file = "./trigramsDF.RData")
+quadgramsDF <- readRDS(file = "./quadgramsDF.RData")
 
 
 ## fuctions for helping generate probs
